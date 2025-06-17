@@ -62,6 +62,12 @@ Here are the detailed write-ups for some of the challenges I solved during the c
 
 ---
 
+## Appendix
+
+*   [Master Prompt v2.1](docs/master_prompt.md) — the exact instructions I gave my AI assistant
+
+---
+
 ### Connect with Me
 *   **LinkedIn:** [linkedin.com/in/moneers/](https://www.linkedin.com/in/moneers/)
 *   **GitHub:** [github.com/Moneer-S](https://github.com/Moneer-S)
