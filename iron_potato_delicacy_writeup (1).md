@@ -6,24 +6,30 @@
 
 ## 0  Scenario Overview
 
-While searching the Iron Potato vault, our team recovered a single file, \`what_is_pizza.hex\`.\
+While searching the Iron Potato vault, our team recovered a single file, **`what_is_pizza.hex`**.
 The CTF brief gave two crucial hints:
 
-1. Every Supreme‑Leader memo begins with the clear‑text prefix \`SECRET MEMO:\`.
+1. Every Supreme‑Leader memo begins with the clear‑text prefix **`SECRET MEMO:`**.
 2. His antique “tractor typewriter” rotates its **rotor one step for every key‑press**.
 
-Our mission was to decrypt that file and extract the hidden directive (the flag) (the flag).
+Our mission was to decrypt `what_is_pizza.hex` and extract the hidden directive (the flag).
 
----
+## 1  Recon & Preliminary Analysis
 
-## 1  Recon & File Reconnaissance
+Before diving into code, we checked for common crypto‑analysis approaches. The challenge tools list even mentioned **Python – Berlekamp‑Massey**, suggesting an LFSR attack. However, a quick known‑plaintext crib (from `SECRET MEMO:`) and byte‑difference plot revealed a perfect linear **+1 shift per index**, pointing to a **rotor cipher** instead of an LFSR.
 
 | Check           | Result                                                                    |
 | --------------- | ------------------------------------------------------------------------- |
 | `file` command  | ASCII text, **hex dump** only (no binary footers)                         |
 | Size            | 512 bytes                                                                 |
 | Entropy         | Near‑uniform, but entirely printable — indicates **simple stream cipher** |
-| Known‑plaintext | `SECRET MEMO:` crib at offset 0                                           |
+| Known‑plaintext | `SECRET MEMO:` crib at offset 0                                           |
+
+\--------------- | ------------------------------------------------------------------------- |
+\| `file` command  | ASCII text, **hex dump** only (no binary footers)                         |
+\| Size            | 512 bytes                                                                 |
+\| Entropy         | Near‑uniform, but entirely printable — indicates **simple stream cipher** |
+\| Known‑plaintext | `SECRET MEMO:` crib at offset 0                                           |
 
 ---
 
@@ -43,7 +49,7 @@ We observed that each ciphertext byte was shifted by an *incrementally growing* 
 
 The behaviour matches a rotor starting at 0 and adding +1 each keystroke:
 
-\(c_i = (p_i + i) \pmod{256} \qquad\Longrightarrow\qquad p_i = (c_i - i) \pmod{256}\)
+$c_i = (p_i + i) \pmod{256} \qquad\Longrightarrow\qquad p_i = (c_i - i) \pmod{256}$
 
 No extra key material is involved; the keystream is fully deterministic.
 
@@ -90,7 +96,6 @@ Submitting that string solved the challenge.
 
 ## 6  Lessons Learned
 
-- **Low‑entropy keystreams are brittle** – a 12‑byte crib fully recovers the stream.
-- **Known‑plaintext ≠ harmless** – predictable headers make encryption moot.
-- **Minimal tooling wins** – we solved with `xxd`, `hexdump`, and 10 lines of Python.
-
+* **Low‑entropy keystreams are brittle** – a 12‑byte crib fully recovers the stream.
+* **Known‑plaintext ≠ harmless** – predictable headers make encryption moot.
+* **Minimal tooling wins** – we solved with `xxd`, `hexdump`, and 10 lines of Python.
