@@ -16,7 +16,7 @@ Our mission was to decrypt `what_is_pizza.hex` and extract the hidden directive 
 
 ## 1  Recon & Preliminary Analysis
 
-Before diving into code, we checked for common crypto‑analysis approaches. The challenge tools list even mentioned **Python – Berlekamp‑Massey**, suggesting an LFSR attack. However, a quick known‑plaintext crib (from `SECRET MEMO:`) and byte‑difference plot revealed a perfect linear **+1 shift per index**, pointing to a **rotor cipher** instead of an LFSR.
+Before diving into code, I checked for common crypto‑analysis approaches. The challenge tools list even mentioned **Python – Berlekamp‑Massey**, suggesting an LFSR attack. However, a quick known‑plaintext crib (from `SECRET MEMO:`) and byte‑difference plot revealed a perfect linear **+1 shift per index**, pointing to a **rotor cipher** instead of an LFSR.
 
 | Check           | Result                                                                    |
 | --------------- | ------------------------------------------------------------------------- |
@@ -35,7 +35,7 @@ xxd -r -p what_is_pizza.hex > pizza.bin
 hexdump -C pizza.bin | head  # first 16 bytes
 ```
 
-We observed that each ciphertext byte was shifted by an *incrementally growing* value. Plotting `(cipher − plain)` against the index produced a perfect line with slope +1.
+I observed that each ciphertext byte was shifted by an *incrementally growing* value. Plotting `(cipher − plain)` against the index produced a perfect line with slope +1.
 
 ---
 
