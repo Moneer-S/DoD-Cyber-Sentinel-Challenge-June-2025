@@ -3,8 +3,8 @@
 <p align="center">
   <table>
     <tr>
-      <td><img src="![Image](https://github.com/user-attachments/assets/ef864158-f2c5-43ef-8419-168b48a3eed0)" alt="4th Place Result" width="350"></td>
-      <td><img src="![Image](https://github.com/user-attachments/assets/daa4d059-ff10-4ed8-984c-0bfc1f3f80d4)" alt="Top 10 Winner Badge" width="350"></td>
+      <td><img src="images/scoreboard.png" alt="4th Place Result" width="350"></td>
+      <td><img src="images/top10_badge.png" alt="Top 10 Winner Badge" width="350"></td>
     </tr>
   </table>
 </p>
@@ -43,10 +43,14 @@ While my pre-competition research included a wide range of specialized web tools
 *   **Web Analysis:** `Burp Suite`, Browser DevTools
 *   **Forensics & RE:** `Volatility3`, `exiftool`, `zsteg`, `objdump`
 *   **Scripting & Exploitation:** `pwntools`, `Python`
+*   **AI assistants:** `Gemini 2.5 Pro`, `OpenAI o3`, `o4-mini-high`
 
 ## 3. Challenge Write-ups
 
-Here are the detailed write-ups for some of the challenges I solved during the competition.
+Here are the detailed write-ups for some of the challenges I solved during the competition:
+
+- [Iron Potato Delicacy](writeups/iron_potato_delicacy.md) - Crypto/Steganography (300 points)
+- [overSSHaring](writeups/over_ssharing.md) - Networking (200 points)
 
 
 
