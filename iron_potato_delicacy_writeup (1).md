@@ -6,10 +6,10 @@
 
 ## 0  Scenario Overview
 
-While searching the Iron Potato vault, our team recovered a single file, \`\`.\
+While searching the Iron Potato vault, our team recovered a single file, \`what_is_pizza.hex\`.\
 The CTF brief gave two crucial hints:
 
-1. Every Supreme‑Leader memo begins with the clear‑text prefix \`\`.
+1. Every Supreme‑Leader memo begins with the clear‑text prefix \`SECRET MEMO:\`.
 2. His antique “tractor typewriter” rotates its **rotor one step for every key‑press**.
 
 Our mission was to decrypt that file and extract the hidden directive (the flag) (the flag).
