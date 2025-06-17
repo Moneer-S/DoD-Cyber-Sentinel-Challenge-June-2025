@@ -92,4 +92,4 @@ Submitting that string solved the challenge.
 
 * **Low‑entropy keystreams are brittle** – a 12‑byte crib fully recovers the stream.
 * **Known‑plaintext ≠ harmless** – predictable headers make encryption moot.
-* **Minimal tooling wins** – we solved with `xxd`, `hexdump`, and 10 lines of Python.
+* **Minimal tooling wins** – solved with `xxd`, `hexdump`, and 10 lines of Python.
