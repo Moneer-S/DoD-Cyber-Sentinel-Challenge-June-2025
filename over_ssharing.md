@@ -116,5 +116,4 @@ C1{f0ll0wing_th3_l34d5}
 - **Minimal tooling** (Impacket + John) remains effective.
 - Disable `PasswordAuthentication yes` or rotate to key-only SSH.
 
-*Write-up by Moneer Shoukri – June 2025*
 
