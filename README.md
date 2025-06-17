@@ -3,8 +3,9 @@
 <p align="center">
   <table>
     <tr>
-      <td><img src="images/scoreboard.png" alt="4th Place Result" width="350"></td>
-      <td><img src="images/top10_badge.png" alt="Top 10 Winner Badge" width="350"></td>
+      <td><img src="images/placement.png" alt="Final Placement" width="300"></td>
+      <td><img src="images/scoreboard.png" alt="4th Place Result" width="300"></td>
+      <td><img src="images/top10_badge.png" alt="Top 10 Winner Badge" width="300"></td>
     </tr>
   </table>
 </p>
