@@ -25,11 +25,11 @@ Before diving into code, we checked for common crypto‑analysis approaches. The
 | Entropy         | Near‑uniform, but entirely printable — indicates **simple stream cipher** |
 | Known‑plaintext | `SECRET MEMO:` crib at offset 0                                           |
 
-\|--------------- | ------------------------------------------------------------------------- |
-\| `file` command  | ASCII text, **hex dump** only (no binary footers)                         |
-\| Size            | 512 bytes                                                                 |
-\| Entropy         | Near‑uniform, but entirely printable — indicates **simple stream cipher** |
-\| Known‑plaintext | `SECRET MEMO:` crib at offset 0                                           |
+| --------------- | ------------------------------------------------------------------------- |
+| `file` command  | ASCII text, **hex dump** only (no binary footers)                         |
+| Size            | 512 bytes                                                                 |
+| Entropy         | Near‑uniform, but entirely printable — indicates **simple stream cipher** |
+| Known‑plaintext | `SECRET MEMO:` crib at offset 0                                           |
 
 ---
 
