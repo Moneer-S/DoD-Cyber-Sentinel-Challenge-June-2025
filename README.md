@@ -50,6 +50,7 @@ While my pre-competition research included a wide range of specialized web tools
 
 Here are the detailed write-ups for some of the challenges I solved during the competition:
 
+- [Decryption Conniption](writeups/decryption_conniption.md) - Forensics (300 points)
 - [Iron Potato Delicacy](writeups/iron_potato_delicacy.md) - Crypto/Steganography (300 points)
 - [overSSHaring](writeups/over_ssharing.md) - Networking (200 points)
 
