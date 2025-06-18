@@ -25,13 +25,15 @@ The brief said an **`SSLKEYLOGFILE`** env‑var was deployed, so TLS traffic *sh
 
 | Step                  | Tool / Command                                                              | Expected Result                                               |
 | --------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| 1 Extract TLS secrets | `strings -a -n12 memory.raw \| grep -E "^CLIENT_RANDOM" > keys.log`         | 26 CLIENT\_RANDOM lines                                       |
-| 2 Decrypt PCAP        | `tshark -r evidence.pcapng -o tls.keylog_file:keys.log -w decrypted.pcapng` | Plain‑text HTTP/2 now visible                                 |
-| 3 Locate large POST   | Wireshark filter: `http2.data.data && http.request.method == "POST"`        | One 630 kB stream (ID 7) with `content-type: application/zip` |
-| 4 Export the object   | *File → Export Objects → HTTP* (save as `source.zip`)                       | Valid ZIP containing stolen code                              |
-| 5 Read flag           | `grep -R "C1{" source/`                                                     | `C1{the_ir0n_p0tat0_checks_r3ferences}`                       |
+| 1 Extract TLS secrets | `strings -n16 -el memory.raw \| grep -E "CLIENT_RANDOM" > keylog.log`       | ~1,800 lines of TLS keys (UTF-16 format crucial)             |
+| 2 Decrypt PCAP        | Add keylog.log to Wireshark Preferences → Protocols → TLS                   | TLS streams now decryptable                                   |
+| 3 Find VNC password   | `tshark -Y 'vnc.client_message_type == 4 && vnc.key_down == 1' -T fields -e vnc.key` | Password: `th3_ir0n_p0tat0_guid3s_us<3`                       |
+| 4 Locate POST upload  | Wireshark filter: `http.request.method == POST`                             | One POST to `upload.gofile.io` (packet 8181)                 |
+| 5 Extract 7z archive  | Save packet 8181, carve 7z from HTTP body (remove webform headers)          | Password-protected 7z archive                                |
+| 6 Unlock archive     | Open 7z with password from VNC keystrokes                                   | Unlocked archive reveals Python source                       |
+| 7 Read flag           | Open extracted Python file                                                  | `C1{the_ir0n_p0tat0_checks_r3ferences}`                       |
 
-That five‑step path solves the challenge in \~10 minutes.  I reached step 2 quickly—but then went off‑track.
+That seven‑step path solves the challenge in \~15 minutes.  I reached step 2 quickly, but then went off‑track.
 
 ## 2  What *I* Tried During the CTF
 
@@ -40,7 +42,7 @@ That five‑step path solves the challenge in \~10 minutes.  I reached step 2 qu
 | **Volatility3 dumpfiles / pagecache**                                                                                        | Maybe the attacker left the ZIP in RAM.                                                            | No matching files recovered.                     |
 | **Foremost / Binwalk carve of** `memory.raw`                                                                                 | Brute‑force for ZIP headers.                                                                       | Found dozens of corrupt fragments; none rebuilt. |
 | **Tshark** `--export-objects http`                                                                                           | Auto‑extract HTTP bodies.  Returned *empty* directory (because the traffic still looked like TLS). | Assumed no HTTP payload existed → mistake!       |
-| **Hunted VNC clipboard (port 5900)**                                                                                         | Saw VNC packets; searched `vnc.client_cut_text` / `vnc.server_cut_text`.                           | No flag. VNC was just remote desktop, not exfil. |
+| **Hunted VNC clipboard (port 5900)**                                                                                         | Saw VNC packets; searched `vnc.client_cut_text` / `vnc.server_cut_text`.                           | Found password but missed its significance for archive. |
 | **Tcp stream brute‑grep** (`follow,tcp,ascii,#`)                                                                             | Maybe the flag was in clear ASCII.                                                                 | Searched all 40 streams—nothing.                 |
 | **Hex‑encoded / Base‑64 flag in RAM**                                                                                        | Last‑minute hail‑mary: decode every `C1[0‑9A‑F]+`.                                                 | Lots of junk; no valid flag.                     |
 
@@ -52,44 +54,15 @@ I burned \~2 hours on side paths instead of re‑examining **why the HTTP export
 
 1. **TLS 1.2 vs 1.3 assumption** — I thought the traffic might be TLS 1.3 (which ignores `SSLKEYLOGFILE`), so I didn't trust the decrypted PCAP enough to look for HTTP.
 2. **Blind faith in** `--export-objects` — The first decryption attempt still showed "Encrypted Alert" packets; `export-objects` produced nothing, reinforcing my bias that "there's no HTTP".
-3. **Rabbit‑holes** — Once I latched onto VNC and corrupt ZIP fragments, sunk‑cost bias kept me digging instead of stepping back.
+3. **UTF-16 encoding oversight** — I used `strings -a -n12` but Windows stores strings as UTF-16. The correct command `strings -n16 -el` would have extracted ~1,800 TLS key lines instead of just 26.
+4. **Missing the connection** — I found the VNC password (`th3_ir0n_p0tat0_guid3s_us<3`) in clipboard traffic but didn't realize it was meant for unlocking the exported archive.
+5. **Rabbit‑holes** — Once I latched onto VNC and corrupt ZIP fragments, sunk‑cost bias kept me digging instead of stepping back.
 
-A single glance at **content‑type headers** in Wireshark would have revealed the 630 kB ZIP immediately.
-
----
-
-## 4  Correct Solution in 90 Seconds (after the fact)
-
-```bash
-# 1  Extract secrets
-strings -a -n12 memory.raw | grep -E "^CLIENT_RANDOM" > keys.log
-
-# 2  Decrypt capture
-editcap --inject-secrets tls,keys.log evidence.pcapng decrypted.pcapng
-
-# 3  Identify biggest HTTP object
-capinfos -cd decrypted.pcapng | sort -k3 -nr | head   # stream 7
-
-# 4  Export that stream
-mkdir loot &&
-  tshark -r decrypted.pcapng --export-objects "http,loot" -2 -R "tcp.stream==7"
-
-# 5  Unzip & grep
-unzip -q loot/*.zip -d loot/src
-grep -R "C1{" loot/src
-```
-
-Output:
-
-```
-loot/src/stealer_client.py:FLAG = "C1{the_ir0n_p0tat0_checks_r3ferences}"
-```
-
-Submit **`C1{the_ir0n_p0tat0_checks_r3ferences}`**.
+The critical error was using wrong `strings` parameters for Windows UTF-16 data, which prevented proper TLS decryption. With correct extraction, the HTTP POST to `upload.gofile.io` and VNC password connection would have been obvious.
 
 ---
 
-## 5  Impact on the Scoreboard
+## 4  Impact on the Scoreboard
 
 **This challenge directly cost me a podium finish.** At **16:18** I was sitting in **2nd place** (2,675 pts), but by the **18:00** end of the CTF I'd dropped to **4th place**. Had I captured it (it was one of two remaining flags—alongside a 200 pt Forensics challenge), I would have vaulted to **2nd overall**, just 200 points shy of first's perfect score.  Final standings were:
 
@@ -100,7 +73,7 @@ Submit **`C1{the_ir0n_p0tat0_checks_r3ferences}`**.
 | 3     | David R-81 | 2875  |
 | 4     | Moneer     | 2675  |
 
-## 6  Key Takeaways
+## 5  Key Takeaways
 
 - **Always verify decryption truly succeeded** — a single missing `CLIENT_RANDOM` line kept HTTP data opaque my first pass.
 - **Export‑objects is blunt; inspect headers manually** with Wireshark's Follow‑Stream if zero objects export.
