@@ -1,10 +1,13 @@
 # Decryption Conniption — Forensics Challenge Write‑Up
 
-> **Category:** Forensics   |   **Points:** 300 (Hard)
+> **Category:** Forensics   |   **Points:** 300 (Hard)  
+> **Status:** ❌ **NOT SOLVED DURING CTF** - Post-competition analysis
 
 ---
 
 ## 0  Scenario Overview
+
+**Note:** I did not solve this challenge during the CTF competition. This write-up documents my failed attempts during the event and the correct solution I learned afterward.
 
 HR unknowingly hired a North‑Torbian Python dev who may have siphoned our proprietary code.  I was given the following:
 
@@ -88,7 +91,7 @@ Submit **`C1{the_ir0n_p0tat0_checks_r3ferences}`**.
 
 ## 5  Impact on the Scoreboard
 
-At **16:18** I was sitting in **2nd place** (2,675 pts), but by the **18:00** end of the CTF I'd dropped to **4th place**.  Had I captured it (it was one of two remaining flags—alongside a 200 pt Forensics challenge), I would have vaulted to **2nd overall**, just 200 points shy of first's perfect score.  Final standings were:
+**This challenge directly cost me a podium finish.** At **16:18** I was sitting in **2nd place** (2,675 pts), but by the **18:00** end of the CTF I'd dropped to **4th place**.  I never solved this challenge during the competition. Had I captured it (it was one of two remaining flags—alongside a 200 pt Forensics challenge), I would have vaulted to **2nd overall**, just 200 points shy of first's perfect score.  Final standings were:
 
 | Place | User       | Score |
 | ----- | ---------- | ----- |

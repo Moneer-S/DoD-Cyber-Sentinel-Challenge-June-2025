@@ -48,12 +48,15 @@ While my pre-competition research included a wide range of specialized web tools
 
 ## 3. Challenge Write-ups
 
-Here are the detailed write-ups for some of the challenges I solved during the competition:
+Here are the detailed write-ups for challenges from the competition:
 
-- [Decryption Conniption](writeups/decryption_conniption.md) - Forensics (300 points)
+### Challenges I Solved During the CTF:
 - [Inspo](writeups/inspo_osint.md) - OSINT/Geolocation (200 points)
 - [Iron Potato Delicacy](writeups/iron_potato_delicacy.md) - Crypto/Steganography (300 points)
 - [overSSHaring](writeups/over_ssharing.md) - Networking (200 points)
+
+### Post-CTF Analysis:
+- [Decryption Conniption](writeups/decryption_conniption.md) - Forensics (300 points) - *One of only 2 challenges I didn't solve during the competition; includes post-event analysis of the correct solution*
 
 
 
