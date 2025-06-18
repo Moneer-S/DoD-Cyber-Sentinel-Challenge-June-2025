@@ -6,7 +6,7 @@
 
 ## 0  Scenario Overview
 
-HR unknowingly hired a North‑Torbian Python dev who may have siphoned our proprietary code.  We were given:
+HR unknowingly hired a North‑Torbian Python dev who may have siphoned our proprietary code.  I was given the following:
 
 - **`memory.raw`** – a 4 GB Windows RAM image (captured after the incident)
 - **`evidence.pcapng`** – full network capture of the workstation
@@ -28,7 +28,7 @@ The brief said an **`SSLKEYLOGFILE`** env‑var was deployed, so TLS traffic *sh
 | 4 Export the object   | *File → Export Objects → HTTP* (save as `source.zip`)                       | Valid ZIP containing stolen code                              |
 | 5 Read flag           | `grep -R "C1{" source/`                                                     | `C1{the_ir0n_p0tat0_checks_r3ferences}`                       |
 
-That five‑step path solves the challenge in \~10 minutes.  We reached step 2 quickly—but then went off‑track.
+That five‑step path solves the challenge in \~10 minutes.  I reached step 2 quickly—but then went off‑track.
 
 ## 2  What *I* Tried During the CTF
 
